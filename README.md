@@ -357,3 +357,8 @@ And that’s it! You’ve now completed your first lab assignment using GitHub a
 3. You can now view the project in the browser by clicking the "Application" port in the Ports panel.
 
 Follow the instructions in the previous sections to complete the lab.
+
+
+## Local API URL
+
+The frontend uses `http://localhost:3080` by default. For a remote API, create a `.env.local` file with `VITE_API_URL=https://your-api-host` and restart Vite. Trailing slashes are normalized automatically.

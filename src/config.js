@@ -1,2 +1,2 @@
-// TODO: Replace this with your own Server URL for your codespace
-export const BASE_URL = "https://fantastic-chainsaw-pwjv4wjp7ggcrvv9-3080.app.github.dev/";
+// Override this when the API runs in a remote Codespace.
+export const BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:3080').replace(/\/+$/, '');

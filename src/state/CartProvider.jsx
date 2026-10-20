@@ -15,7 +15,6 @@ const cartReducer = (state, action) => {
   const { payload } = action;
   switch (action.type) {
     case ADD_ITEM:
-      console.log({state, action})
       const newState = {
         ...state,
         itemsById: {
@@ -48,6 +47,10 @@ const cartReducer = (state, action) => {
 
     case UPDATE_ITEM_QUANTITY:
       const currentItem = state.itemsById[payload._id]
+      if (!currentItem) return state
+      if (currentItem.quantity + payload.quantity <= 0) {
+        return cartReducer(state, { type: REMOVE_ITEM, payload })
+      }
       const updateItemState = {
         ...state,
         itemsById:{

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom';
 import '../App.css';
 import { BASE_URL } from '../config';
-import AddToCart from './AddToCart'
+import AddToCart from './AddTocart'
 
 
 export default function SingleView() {
@@ -11,19 +11,23 @@ export default function SingleView() {
 
   const [ product, setProduct ] = useState(null)
 
-  const fetchProductById = async (id) => {
-      const product = await fetch(`${BASE_URL}/products/${id}`)
-        .then((res) => res.json());
-      return product;
-    };
+  const [error, setError] = useState('');
 
-    useEffect(() => {
-      const getProduct = async () => {
-        const data = await fetchProductById(id);
-        setProduct(data)
-      }
-      getProduct();
-    }, [id, fetchProductById]);
+  useEffect(() => {
+    let active = true;
+    setProduct(null);
+    setError('');
+    fetch(`${BASE_URL}/products/${encodeURIComponent(id)}`)
+      .then(response => {
+        if (!response.ok) throw new Error('Unable to load product');
+        return response.json();
+      })
+      .then(data => { if (active) setProduct(data); })
+      .catch(() => { if (active) setError('Unable to load product.'); });
+    return () => { active = false; };
+  }, [id]);
+
+  if (error) return <p role="alert">{error}</p>;
 
   if (!product) return (<div className="loading-spinner"></div>);
 
